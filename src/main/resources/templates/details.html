@@ -1,0 +1,117 @@
+<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/main.html">
+    <div layout:fragment="content">
+        <div class="row mt-5">
+            <div class="col-6 offset-3">
+                <form th:action="@{'/saveItem'}" method="post">
+
+                    <input type="hidden" th:value="${getItem.id}" name="item_id">
+
+                    <div class="form-group mt-3">
+                        <label th:text="#{label.name}"></label>
+                        <input type="text" class="form-control" name="item_name" th:value="${getItem.name}">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label th:text="#{label.price}"></label>
+                        <input type="text" class="form-control" name="item_price" th:value="${getItem.price}">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label th:text="#{label.amount}"></label>
+                        <input type="text" class="form-control" name="item_amount" th:value="${getItem.amount}">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label th:text="#{label.amount}"></label>
+                        <input type="text" class="form-control" name="item_amount" th:value="${getItem.amount}">
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label th:text="#{label.country}"></label>
+                        <select class="form-control" name="country_id">
+                            <option th:each="cnt: ${countryList}" th:text="${cnt.name + '/' + cnt.code}"
+                                    th:value="${cnt.id}" th:selected="${getItem.getCountries().getId() == cnt.id}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <button class="btn btn-success" th:text="#{button.save}"></button>
+
+                        <!-- Button trigger modal -->
+                        <button th:text="#{button.delete}" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete">
+
+                        </button>
+                    </div>
+
+                </form>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form th:action="${'/deleteItem'}" method="post">
+                            <input type="hidden" th:value="${getItem.id}" name="item_id">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" th:text="#{modal.body}">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-warning">YES</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-6 offset-3">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr th:each="cat: ${getItem.categories}">
+                            <form th:action="@{'/deleteCategory'}" method="post">
+                                <input type="hidden" name="item_id" th:value="${getItem.id}">
+                                <input type="hidden" th:value="${cat.id}" name="cat_id">
+
+                                <td th:text="${cat.name}"></td>
+                                <td>
+                                    <button type="submit" class="btn btn-danger btn-sm">-</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-6 offset-3">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr th:each="cat: ${categoryList}">
+                            <form th:action="@{'/addCategory'}" method="post">
+                                <input type="hidden" name="item_id" th:value="${getItem.id}">
+                                <input type="hidden" name="cat_id" th:value="${cat.id}">
+
+                                <td th:text="${cat.name}"></td>
+                                <td>
+                                    <button type="submit" class="btn btn-success btn-sm">+</button>
+                                </td>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+</html>
